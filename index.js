@@ -11,11 +11,14 @@ const libraryriutes=require("./routes/library.routes")
 server.use("/library",libraryriutes)
 const jwt=require("jsonwebtoken")
 const morgan = require('morgan')
+const cors = require('cors')
 
+
+server.use(cors())
 
 server.use(morgan(':method :url :status :res[content-length] - :response-time ms :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'))
 
-server.get("/",async(req,res)=>{
+server.get('/',(req,res)=>{
     res.send(`welcome to harshit library`)
 })
 
