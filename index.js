@@ -15,6 +15,10 @@ const morgan = require('morgan')
 
 server.use(morgan(':method :url :status :res[content-length] - :response-time ms :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'))
 
+server.get("/",async(req,res)=>{
+    res.send(`welcome to harshit library`)
+})
+
 
 server.post("/token",async(req,res)=>{
     const refreshtoken=req.body.token;
