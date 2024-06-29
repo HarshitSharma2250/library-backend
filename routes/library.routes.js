@@ -22,9 +22,9 @@ libraryRoutes.get("/allData",Auth,async(req,res)=>{
     const {role}=req.body
     if(role.includes('VIEW_ALL')){
         const data=await librarydata.find()
-        res.status(400).json(data)
+        res.status(400).json({"data":data})
     }else{
-        res.status(404).json(`u are not autherized`)
+        res.status(404).json({"message":"u are not autherized"})
     }
 })
 libraryRoutes.get("/viewer",Auth,async(req,res)=>{
