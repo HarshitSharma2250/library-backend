@@ -6,7 +6,7 @@ const userschema=mongoose.Schema({
     password:{type:String,required:true},
     age:{type:Number,required:true},
     role:{type:Array,required:true},
-    userId:{type:String,required:true}
+    userId:{type:String}
 },{
     versionKey:false,
     timestamps: true
