@@ -31,31 +31,6 @@ server.get('/', (req, res) => {
     res.send(`Welcome to Harshit's library`);
 });
 
-// Token generation route
-
-server.post("/token", async (req, res) => {
-    const refreshToken = req.body.token;
-    if (!refreshToken) {
-        return res.status(400).send(`Invalid token`);
-    }
-
-    jwt.verify(refreshToken, 'masaischool', function (err, decoded) {
-        if (err) {
-            return res.status(401).send(`Error verifying refresh token`);
-        }
-
-        if (decoded) {
-            const accessToken = jwt.sign(
-                { name: decoded.name, myId: decoded.myId, role: decoded.role },
-                'masai',
-                { expiresIn: '10m' }
-            );
-            return res.status(200).send({ "message": `Token successfully generated`, "accessToken": accessToken });
-        } else {
-            return res.status(401).send(`Please login again`);
-        }
-    });
-});
 
 // Start server
 server.listen(PORT, async () => {

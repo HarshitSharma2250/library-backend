@@ -33,9 +33,8 @@ bcrypt.compare(password, finduser.password, function(err, result) {
     res.status(404).send(`semthing went error while login`)
    }
    if(result){
-    const  accessToken = jwt.sign({name:finduser.name,myId:finduser._id,role:finduser.role}, 'masai',{expiresIn:"1m"});
-    const  refreshToken = jwt.sign({name:finduser.name,myId:finduser._id,role:finduser.role}, 'masaischool',{expiresIn:"1d"});
-    res.status(404).json({"mess":`loggin successfull`,"accessToken":accessToken,"refreshToken":refreshToken})
+    const  token = jwt.sign({name:finduser.name,myId:finduser._id,role:finduser.role}, 'masai',{expiresIn:"1d"});
+    res.status(404).json({"mess":`loggin successfull`,"accessToken":accessToken,"refreshToken":token})
    }else{
     res.status(404).json(`semthing went error while generating token`)
    }
