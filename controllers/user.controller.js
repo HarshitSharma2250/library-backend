@@ -15,9 +15,9 @@ const register=async(req,res)=>{
         if(hash){
             const data=new users({name,email,password:hash,age,role})
             await data.save()
-            res.status(400).send(`registration successfull`)
+            res.status(400).json({ message: 'All fields are required' });
         }else{
-            res.status(404).send(`something went wrong during hashing password`)
+            res.status(404).json(`something went wrong during hashing password`)
         }
     });
 };
