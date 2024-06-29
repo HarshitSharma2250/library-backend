@@ -5,7 +5,8 @@ const userschema=mongoose.Schema({
     email:{type:String,required:true,unique:true},
     password:{type:String,required:true},
     age:{type:Number,required:true},
-    role:{type:Array,required:true}
+    role:{type:Array,required:true},
+    userId:{type:String,required:true}
 },{
     versionKey:false,
     timestamps: true
