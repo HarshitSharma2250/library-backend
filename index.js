@@ -15,9 +15,7 @@ const PORT = process.env.PORT || 8080;
 // Middleware
 server.use(express.json());
 server.use(cors({
-    origin:"http://127.0.0.1:5173",
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin:"http://127.0.0.1:5173"
 })); 
 
 server.use(morgan(':method :url :status :res[content-length] - :response-time ms :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'));
