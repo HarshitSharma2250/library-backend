@@ -1,51 +1,62 @@
-const express=require("express")
-const server=express()
-server.use(express.json())
-const dotenv=require("dotenv")
-dotenv.config()
-const database=require("./config/user.connect")
-const PORT=process.env.PORT||8080
-const userroutes=require("./routes/user.routes")
-server.use("/user",userroutes)
-const libraryriutes=require("./routes/library.routes")
-server.use("/library",libraryriutes)
-const jwt=require("jsonwebtoken")
-const morgan = require('morgan')
-const cors = require('cors')
+const express = require("express");
+const server = express();
+const dotenv = require("dotenv");
+const cors = require("cors");
+const morgan = require("morgan");
+const jwt = require("jsonwebtoken");
 
+dotenv.config();
+const database = require("./config/user.connect");
+const userRoutes = require("./routes/user.routes");
+const libraryRoutes = require("./routes/library.routes");
 
-server.use(cors())
+const PORT = process.env.PORT || 8080;
 
-server.use(morgan(':method :url :status :res[content-length] - :response-time ms :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'))
+// Middleware
+server.use(express.json());
+server.use(cors()); // Ensure CORS middleware is used before routes
+server.use(morgan(':method :url :status :res[content-length] - :response-time ms :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'));
 
-server.get('/',(req,res)=>{
-    res.send(`welcome to harshit library`)
-})
+// Routes
+server.use("/user", userRoutes);
+server.use("/library", libraryRoutes);
 
+// Root route
+server.get('/', (req, res) => {
+    res.send(`Welcome to Harshit's library`);
+});
 
-server.post("/token",async(req,res)=>{
-    const refreshtoken=req.body.token;
-if(!refreshtoken){
-    res.status(404).send(`token invalid `)
-}
-jwt.verify(refreshtoken, 'masaischool', function(err, decoded) {
-    if(err){
-        res.status(404).send(`something went wrong while verification refresh token`)
+// Token generation route
+server.post("/token", async (req, res) => {
+    const refreshToken = req.body.token;
+    if (!refreshToken) {
+        return res.status(400).send(`Invalid token`);
     }
-    if(decoded){
-        const accesstoken=jwt.sign({name:decoded.name,myId:decoded.myId,role:decoded.role},'masai',{expiresIn:'10m'})
-        res.status(400).send({"mess":`token successfully generated`,"accesstoken":accesstoken})
-    }else{
-        res.status(404).send(`please login again`)
-    }
-  });
-})
 
-server.listen(PORT,async()=>{
+    jwt.verify(refreshToken, 'masaischool', function (err, decoded) {
+        if (err) {
+            return res.status(401).send(`Error verifying refresh token`);
+        }
+
+        if (decoded) {
+            const accessToken = jwt.sign(
+                { name: decoded.name, myId: decoded.myId, role: decoded.role },
+                'masai',
+                { expiresIn: '10m' }
+            );
+            return res.status(200).send({ "message": `Token successfully generated`, "accessToken": accessToken });
+        } else {
+            return res.status(401).send(`Please login again`);
+        }
+    });
+});
+
+// Start server
+server.listen(PORT, async () => {
     try {
         await database;
-        console.log(`server is running at port ${PORT}`)
+        console.log(`Server is running at port ${PORT}`);
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
     }
-})
+});

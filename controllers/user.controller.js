@@ -4,6 +4,7 @@ const users=require("../modules/User.module")
 
 
 
+
 const register=async(req,res)=>{
     const{name,email,password,age,role}=req.body;
 
