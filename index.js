@@ -3,7 +3,6 @@ const server = express();
 const dotenv = require("dotenv");
 const cors = require("cors");
 const morgan = require("morgan");
-const jwt = require("jsonwebtoken");
 
 dotenv.config();
 const database = require("./config/user.connect");
@@ -28,7 +27,6 @@ server.use("/library", libraryRoutes);
 server.get('/', (req, res) => {
     res.send(`Welcome to Harshit's library`);
 });
-
 
 // Start server
 server.listen(PORT, async () => {
